@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/thumbs_up"
+        android:icon="@drawable/filter"
+        android:title="@string/thumbs_up" />
+    <item android:id="@+id/thumbs_up_max"
+        android:icon="@drawable/filter"
+        android:title="@string/thumbs_up_max" />
+ <item android:id="@+id/thumbs_down_max"
+        android:icon="@drawable/filter"
+        android:title="@string/thumbs_down_max" />
+    <item android:id="@+id/thumbs_down"
+        android:icon="@drawable/filter"
+        android:title="@string/thumbs_down" />
+</menu>
