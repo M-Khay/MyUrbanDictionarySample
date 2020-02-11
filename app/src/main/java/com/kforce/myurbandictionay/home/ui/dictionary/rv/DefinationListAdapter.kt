@@ -20,7 +20,7 @@ class DefinationListAdapter(var meaningListViewModel: DefinationListViewModel) :
     }
 
     override fun getItemCount(): Int {
-        return meaningListViewModel.getCount()//To change body of created functions use File | Settings | File Templates.
+        return meaningListViewModel.getCount()
     }
 
     override fun onBindViewHolder(holder: DefinationListViewHolder, position: Int) {
