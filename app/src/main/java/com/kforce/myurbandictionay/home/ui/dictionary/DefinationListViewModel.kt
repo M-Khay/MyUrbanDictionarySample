@@ -23,7 +23,7 @@ class DefinationListViewModel : ViewModel() {
     var stateLiveData = MutableLiveData<DictionaryState>()
 
     init {
-        stateLiveData.value = LoadingState(emptyList(), false)
+        stateLiveData.value = DefaultState(emptyList(), false)
     }
 
     fun getDefinationListOf(word: String) {
