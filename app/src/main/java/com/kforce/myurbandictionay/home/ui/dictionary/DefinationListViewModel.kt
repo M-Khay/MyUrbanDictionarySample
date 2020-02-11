@@ -36,30 +36,7 @@ class DefinationListViewModel : ViewModel() {
                 stateLiveData.value = DefaultState(emptyList(), true)
             })
     }
-        /*
-    // RXJava component substitute for above call. Not Implemented for now
 
-        val result =   repository.getMeaningListFor(word)
-            ?.subscribeOn(Schedulers.io())
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe(this::onSuccessResponse, this::onError)
-    }
-
-    private fun onError(error: Throwable) {
-        Log.d(Tag, error.message)
-        stateLiveData.value = ErrorState(error.localizedMessage, obtainCurrentData(), false)
-    }
-
-
-    private fun onSuccessResponse(definationList: List<DefinationModel>) {
-        Log.d(Tag, "" + definationList.size)
-        val currentNews = obtainCurrentData().toMutableList()
-        currentNews.addAll(definationList)
-        stateLiveData.value = DefaultState(currentNews, true)
-    }
-
-
-         */
     fun showFilteredByMinThumbsUp() {
         stateLiveData.value = DefaultState(
             stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsUpComparator)!!, true
