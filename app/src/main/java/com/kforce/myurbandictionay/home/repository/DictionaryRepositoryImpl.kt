@@ -26,7 +26,7 @@ class DictionaryRepositoryImpl(private val service: DictionaryApi) : DictionaryR
                 response: Response<DefinationResponseModel>
             ) {
                 Log.d(TAG, response.toString())
-                response?.body()?.let {
+                response.body()?.let {
                     successHandler(it)
                 }
             }

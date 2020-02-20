@@ -1,13 +1,15 @@
 package com.kforce.myurbandictionay.home.ui.dictionary
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,9 +46,17 @@ class DictionaryFragment : Fragment() {
             ComponentInjector.component.inject(it)
         }
         search_go.setOnClickListener {
-            val text: String = searchtext.text.toString()
-            searchNewTerm(text)
+            searchNewTerm()
         }
+        search_text.setOnEditorActionListener{v, actionId, _ ->
+            if(actionId == EditorInfo.IME_ACTION_SEARCH){
+                v.clearFocus()
+                hideKeyboard()
+                searchNewTerm()
+            }
+            true
+        }
+
         adapter = DefinationListAdapter(viewModel)
         rv_dictionary_list.apply {
             layoutManager = LinearLayoutManager(activity)
@@ -58,10 +68,11 @@ class DictionaryFragment : Fragment() {
         setupFilterMenu()
     }
 
-    private fun searchNewTerm(serachText: String) {
-        Log.d(TAG, "Searched Term : $serachText")
+    private fun searchNewTerm() {
+        val searchText: String = search_text.text.toString()
+        Log.d(TAG, "Searched Term : $searchText")
         filter_menu.close() // if filter_menu was open and a new term is searched, first close the menu.
-        viewModel.getDefinationListOf(serachText)
+        viewModel.getDefinationListOf(searchText)
     }
 
     private val definitionListObserver = Observer<DictionaryState> { state ->
@@ -115,4 +126,9 @@ class DictionaryFragment : Fragment() {
         filter_menu.visibility = View.INVISIBLE
     }
 
+    fun hideKeyboard() {
+            val keyboard =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            keyboard.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
 }

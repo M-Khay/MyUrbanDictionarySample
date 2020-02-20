@@ -7,7 +7,6 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.kforce.myurbandictionay.R
 import com.kforce.myurbandictionay.home.ui.dictionary.DefinationListViewModel
 import com.kforce.myurbandictionay.home.ui.dictionary.DictionaryFragment

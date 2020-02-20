@@ -67,7 +67,7 @@ class DefinationListViewModel : ViewModel() {
     fun getItemAt(position: Int): DefinationModel? {
         if (position < getCount()) {
             stateLiveData.value?.let {
-                return stateLiveData.value!!.data?.get(position)
+                return stateLiveData.value!!.data.get(position)
             }
         }
         return null
@@ -75,7 +75,7 @@ class DefinationListViewModel : ViewModel() {
 
     fun getCount(): Int {
         stateLiveData.value?.let {
-            return it.data?.size
+            return it.data.size
         }
         return 0
     }

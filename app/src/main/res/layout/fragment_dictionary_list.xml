@@ -24,7 +24,7 @@
             tools:context=".MainActivity">
 
             <EditText
-                android:id="@+id/searchtext"
+                android:id="@+id/search_text"
                 android:layout_width="0dp"
                 android:layout_height="55dp"
                 android:layout_weight="1"
@@ -33,7 +33,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:hint="@string/search_hint"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionSearch"
                 android:importantForAccessibility="yes"
                 android:inputType="text"
                 android:lines="1"
