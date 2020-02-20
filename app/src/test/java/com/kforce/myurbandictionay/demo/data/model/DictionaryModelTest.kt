@@ -29,25 +29,25 @@ class DictionaryModelTest {
     }
 
     @Test
-    fun testNewsAuthor() {
+    fun testNewAuthor() {
         Mockito.`when`(dictionaryModel?.author).thenReturn(author)
         Assert.assertEquals("Testing author", dictionaryModel?.author)
     }
 
     @Test
-    fun testNewsThumbsDown() {
+    fun testNewThumbsDown() {
         Mockito.`when`(dictionaryModel?.thumbsDown).thenReturn(thumbsDown)
         Assert.assertEquals(1, dictionaryModel?.thumbsDown)
     }
 
     @Test
-    fun testNewsThumbsUp() {
+    fun testNewThumbsUp() {
         Mockito.`when`(dictionaryModel?.thumbsUp).thenReturn(thumbsUp)
         Assert.assertEquals(3, dictionaryModel?.thumbsUp)
     }
 
     @Test
-    fun testNewsDefinition() {
+    fun testNewDefinition() {
         Mockito.`when`(dictionaryModel?.definition).thenReturn(definition)
         Assert.assertEquals("This is a defination for the searched word test", dictionaryModel?.definition)
     }
