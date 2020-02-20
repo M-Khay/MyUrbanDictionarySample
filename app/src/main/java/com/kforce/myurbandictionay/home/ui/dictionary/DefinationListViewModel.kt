@@ -31,7 +31,7 @@ class DefinationListViewModel : ViewModel() {
         repository.getMeaningListFor(
             word,
             successHandler = {
-                stateLiveData.value = DefaultState(it?.list!!, true)
+                stateLiveData.value = DefaultState(it?.list?: emptyList(), true)
             }, failureHandler = {
                 stateLiveData.value = DefaultState(emptyList(), true)
             })
@@ -39,27 +39,27 @@ class DefinationListViewModel : ViewModel() {
 
     fun showFilteredByMinThumbsUp() {
         stateLiveData.value = DefaultState(
-            stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsUpComparator)!!, true
+            stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsUpComparator)?: emptyList(), true
         )
     }
 
 
     fun showFilteredByMaxThumbsUp() {
         stateLiveData.value = DefaultState(
-            stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsUpComparator)?.reversed()!!,
+            stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsUpComparator)?.reversed()?: emptyList(),
             true
         )
     }
 
     fun showFilteredByMinThumbsDown() {
         stateLiveData.value = DefaultState(
-            stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsDownComparator)!!, true
+            stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsDownComparator)?: emptyList(), true
         )
     }
 
     fun showFilteredByMaxThumbsDown() {
         stateLiveData.value = DefaultState(
-            stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsDownComparator)?.reversed()!!,
+            stateLiveData.value?.data?.sortedWith(DefinationComparator.ThumbsDownComparator)?.reversed()?: emptyList(),
             true
         )
     }

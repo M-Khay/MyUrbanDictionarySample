@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,14 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.kforce.myurbandictionay.R
 import com.kforce.myurbandictionay.home.di.ComponentInjector
 import com.kforce.myurbandictionay.home.ui.dictionary.rv.DefinationListAdapter
-import com.leinardi.android.speeddial.SpeedDialView
 import kotlinx.android.synthetic.main.fragment_dictionary_list.*
 
 class DictionaryFragment : Fragment() {
     private lateinit var viewModel: DefinationListViewModel
     private lateinit var adapter: DefinationListAdapter
 
-    private var isLoading = false
 
     companion object {
         const val TAG = "DictionaryFragment"
@@ -40,13 +39,13 @@ class DictionaryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         viewModel = ViewModelProvider(this).get(DefinationListViewModel::class.java).also {
             ComponentInjector.component.inject(it)
         }
         search_go.setOnClickListener {
             val text: String = searchtext.text.toString()
             searchNewTerm(text)
-
         }
         adapter = DefinationListAdapter(viewModel)
         rv_dictionary_list.apply {
@@ -54,10 +53,44 @@ class DictionaryFragment : Fragment() {
             adapter = this@DictionaryFragment.adapter
         }
 
-        viewModel.stateLiveData.observe(this.viewLifecycleOwner, definatioListObserver)
+        viewModel.stateLiveData.observe(this.viewLifecycleOwner, definitionListObserver)
 
+        setupFilterMenu()
+    }
+
+    private fun searchNewTerm(serachText: String) {
+        Log.d(TAG, "Searched Term : $serachText")
+        filter_menu.close() // if filter_menu was open and a new term is searched, first close the menu.
+        viewModel.getDefinationListOf(serachText)
+    }
+
+    private val definitionListObserver = Observer<DictionaryState> { state ->
+        state?.let {
+            when (state) {
+                is DefaultState -> {
+                    filter_menu.visibility = View.VISIBLE
+                    progress_bar.visibility = View.GONE
+                    adapter.notifyDataSetChanged()
+                }
+                is LoadingState -> {
+                    Log.d(TAG, "loading state")
+                    filter_menu.visibility = View.INVISIBLE
+                    progress_bar.visibility = View.VISIBLE
+                }
+                is ErrorState -> {
+                    Log.e(TAG, "error state")
+                    filter_menu.visibility = View.INVISIBLE
+                    progress_bar.visibility = View.GONE
+                    adapter.notifyDataSetChanged()
+                    Toast.makeText(activity, "Error from api side", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun setupFilterMenu(){
         filter_menu.inflate(R.menu.menu)
-        filter_menu.setOnActionSelectedListener(SpeedDialView.OnActionSelectedListener { actionItem ->
+        filter_menu.setOnActionSelectedListener { actionItem ->
             when (actionItem.id) {
                 R.id.thumbs_up -> {
                     viewModel.showFilteredByMinThumbsUp()
@@ -65,49 +98,21 @@ class DictionaryFragment : Fragment() {
                 }
                 R.id.thumbs_up_max -> {
                     viewModel.showFilteredByMaxThumbsUp()
-                    filter_menu.close()  
+                    filter_menu.close()
                 }
                 R.id.thumbs_down -> {
                     viewModel.showFilteredByMinThumbsDown()
-                    filter_menu.close()  
+                    filter_menu.close()
                 }
                 R.id.thumbs_down_max -> {
                     viewModel.showFilteredByMaxThumbsDown()
-                    filter_menu.close()  
+                    filter_menu.close()
                 }
 
             }
             false
-        })
-    }
-
-    private fun searchNewTerm(serachText: String) {
-        Log.d(TAG, serachText)
-        viewModel.getDefinationListOf(serachText)
-    }
-
-    private val definatioListObserver = Observer<DictionaryState> { state ->
-        state?.let {
-            when (state) {
-                is DefaultState -> {
-                    isLoading = false
-                    progress_bar.visibility = View.GONE
-                    adapter.notifyDataSetChanged()
-
-                }
-                is LoadingState -> {
-                    progress_bar.visibility = View.VISIBLE
-                    Log.d(TAG, "loading state")
-                }
-                is ErrorState -> {
-                    Log.e(TAG, "error state")
-                    Toast.makeText(activity, "Error from api side", Toast.LENGTH_SHORT).show()
-                    progress_bar.visibility = View.GONE
-                    adapter.notifyDataSetChanged()
-                }
-            }
         }
+        filter_menu.visibility = View.INVISIBLE
     }
-
 
 }
